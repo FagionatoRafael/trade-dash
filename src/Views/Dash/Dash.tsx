@@ -4,17 +4,13 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Chart, registerables } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 
 import { InputsDash } from '../../Components/inputsDash/Inputs';
 import { api } from '../../service/api';
 import { AppBarContent } from '../../Components/AppBar/AppBarContent';
-import { ChartLine } from '../../Components/ChartLine/ChartLine';
 import { useParams } from 'react-router-dom';
-import Typography from '@mui/material/Typography';
+import UserCard from '../../Components/UserCard/UserCard';
+import CardValues from '../../Components/CardValues/CardValues';
 
 Chart.register(...registerables, zoomPlugin);
 
@@ -27,8 +23,8 @@ export default function App() {
   let {id} = useParams<RouteParams>();
 
   const [nameUser, setNameUser] = useState('')
-  const [valueUSDUser, setValueUSDUser] = useState('')
-  const [valueGBPUser, setValueGBPUser] = useState('')
+  const [valueUSDUser, setValueUSDUser] = useState(0.0)
+  const [valueGBPUser, setValueGBPUser] = useState(0.0)
 
   const [USDValue, setUSDValue] = useState(0.0)
   const [GBPValue, setGBPValue] = useState(0.0)
@@ -42,6 +38,11 @@ export default function App() {
 
   const [valueUSDGBP, setValueUSDGBP] = useState(0)
   const [secondValueUSDGBP, setSecondValueUSDGBP] = useState(0)
+
+  const handleClick = () => {
+    setValueUSDUser(valueUSDUser + USDValue)
+    setValueGBPUser(valueGBPUser - GBPValue)
+  }
 
   const handleUSD = (value: string) => {
     if(!isNaN(parseFloat(value))) {
@@ -64,8 +65,8 @@ export default function App() {
   useEffect(() => {
     api.get(`/user/${id}`).then((result) => {
       setNameUser(result.data[0].name)
-      setValueUSDUser(result.data[0].valueUSD)
-      setValueGBPUser(result.data[0].ValueGBP)
+      setValueUSDUser(parseFloat(result.data[0].valueUSD))
+      setValueGBPUser(parseFloat(result.data[0].ValueGBP))
     })
   }, [id, nameUser, valueUSDUser, valueGBPUser])
 
@@ -78,7 +79,6 @@ export default function App() {
       setValueUSDGBP(parseFloat(result.data.USDGBP.firstValue))
       setSecondValueUSDGBP(parseFloat(result.data.USDGBP.secondValue))
     }) 
-      
   }, [secondValueGBPUSD, secondValueUSDGBP, timeGBPUSD, valueGBPUSD, valueUSDGBP])
 
   useEffect(() => {
@@ -88,6 +88,7 @@ export default function App() {
       "CONVERT_TO": CONVERTTO
     }).then((result) => {
       CONVERTFROM === 'GBP' ? setUSDValue(result.data.CONVERTED_VALUE) : setGBPValue(result.data.CONVERTED_VALUE)
+
     })
   }, [USDValue, GBPValue, CONVERTVALUE, CONVERTFROM, CONVERTTO])
 
@@ -97,41 +98,32 @@ export default function App() {
       <AppBarContent title={'Trade Aplication'}/>
       <Toolbar id="back-to-top-anchor" />
       <Container>
-        <Card sx={{ minWidth: 275 }}>
-          <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              <AccountBoxIcon style={{width: 100, height: 100}}/>
-            </Typography>
-            <Typography variant="h5" component="div">
-              {nameUser} - $ {valueUSDUser} | £ {valueGBPUser}
-            </Typography>
-          </CardContent>
-        </Card>
+        <UserCard nameUser={nameUser} valueGBPUser={valueGBPUser} valueUSDUser={valueUSDUser}/>
         <Box sx={{ my: 2 }}>
           <InputsDash label={"USD"} adornment={'$'} Value={USDValue} handleUSD={async (value) => handleUSD(value)}/>
           <InputsDash label={"GBP"} adornment={'£'} Value={GBPValue} handleUSD={async (value) => handleGBP(value)}/>   
         </Box>
         <Box sx={{ my: 2 }}>
-          <Card sx={{ maxWidth: 275 }}>
-            <CardContent>
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                USD/GBP
-              </Typography>
-              <Typography variant="h5" component="div">
-                {valueGBPUSD}
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card sx={{ maxWidth: 275 }}>
-            <CardContent>
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                GBP/USD
-              </Typography>
-              <Typography variant="h5" component="div">
-                {valueUSDGBP}
-              </Typography>
-            </CardContent>
-          </Card>
+          <CardValues 
+            title='USD/GBP' 
+            value={valueGBPUSD} 
+            label='GBP' 
+            adornment={'£'} 
+            handle={async (value) => handleGBP(value)}
+            handleClick={handleClick}
+            valueChange={USDValue}
+            adornmentSecond={'$'}
+          />
+          <CardValues 
+            title='GBP/USD' 
+            value={valueUSDGBP} 
+            label='USD' 
+            adornment={'$'} 
+            handle={async (value) => handleUSD(value)} 
+            handleClick={handleClick}
+            valueChange={GBPValue}
+            adornmentSecond={'£'}
+          />
           {/* <ChartLine timeUSDGBP={arrTimeUSDGBP} valueUSDGBP={arrValueUSDGBP} valueGBPUSD={arrValueGBPUSD}/> */}
         </Box>
       </Container>  

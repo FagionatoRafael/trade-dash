@@ -34,10 +34,9 @@ const Signin = () => {
                 ValueGBP: 1000.00
             })
             .then((result) => {
-                console.log(result)
-            })
-
-            history.push(`/dash/${nameSignin}/${passwordSignin}`)
+                console.log(result.data.insertedId)
+                history.push(`/dash/${result.data.insertedId}`)
+            })   
         }
     }
 
