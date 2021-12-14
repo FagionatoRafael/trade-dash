@@ -15,13 +15,14 @@ interface CardValuesProps {
   handle: (arg0: string) => {}
   adornment: string
   adornmentSecond: string
-  handleClick: () => void
+  handleClickBuy: () => void
+  handleClickSell: () => void
 }
 
 const CardValues = (props: CardValuesProps) => {
 
     return (
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ maxWidth: 400 }}>
             <CardContent>
               <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 {props.title}
@@ -45,8 +46,9 @@ const CardValues = (props: CardValuesProps) => {
                   ),
                 }}
               />
-                <Button color='error'>{props.adornmentSecond} {props.valueChange}</Button>
-                <Button onClick={() => props.handleClick()}>Buy</Button>
+                <Button color='success'>{props.adornmentSecond} {props.valueChange}</Button>
+                <Button onClick={() => props.handleClickBuy()}>Buy</Button>
+                <Button onClick={() => props.handleClickSell()}>Sell</Button>
               </ButtonGroup>
             </CardContent>
         </Card>

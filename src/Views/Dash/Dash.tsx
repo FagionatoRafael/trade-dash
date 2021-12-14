@@ -4,18 +4,24 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Chart, registerables } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
-
-import { InputsDash } from '../../Components/inputsDash/Inputs';
+import Stack from '@mui/material/Stack';
 import { api } from '../../service/api';
 import { AppBarContent } from '../../Components/AppBar/AppBarContent';
 import { useParams } from 'react-router-dom';
 import UserCard from '../../Components/UserCard/UserCard';
 import CardValues from '../../Components/CardValues/CardValues';
+import AccordionPastTrades from '../../Components/AccordionPastTrades/AccordionPastTrades';
 
 Chart.register(...registerables, zoomPlugin);
 
 interface RouteParams {
   id: string
+}
+
+interface pastTradesParams {
+  FromTo: string
+	valueUSD: number,
+  valueGBP:	number
 }
 
 export default function App() {
@@ -39,9 +45,56 @@ export default function App() {
   const [valueUSDGBP, setValueUSDGBP] = useState(0)
   const [secondValueUSDGBP, setSecondValueUSDGBP] = useState(0)
 
-  const handleClick = () => {
-    setValueUSDUser(valueUSDUser + USDValue)
+  const [pasTrades, setPastTrades] = useState<Array<pastTradesParams>>([])
+
+  const handleClickBuyUSDGBP = () => {
+    setValueUSDUser(parseFloat(valueUSDUser.toString()) + parseFloat(USDValue.toString()))
     setValueGBPUser(valueGBPUser - GBPValue)
+    updateUser(parseFloat(valueUSDUser.toString()), 
+      parseFloat(valueGBPUser.toString()), 
+      parseFloat(USDValue.toString()), 
+      parseFloat(GBPValue.toString()))
+  }
+
+  const handleClickSellUSDGBP = () => {
+    setValueUSDUser(parseFloat(valueGBPUser.toString()) + parseFloat(GBPValue.toString()))
+    setValueGBPUser(valueUSDUser - USDValue)
+    updateUser(parseFloat(valueUSDUser.toString()), 
+      parseFloat(valueGBPUser.toString()), 
+      parseFloat(USDValue.toString()), 
+      parseFloat(GBPValue.toString()))
+  }
+
+  const handleClickBuyGBPUSD = () => {
+    setValueUSDUser(parseFloat(valueGBPUser.toString()) + parseFloat(GBPValue.toString()))
+    setValueGBPUser(valueUSDUser - USDValue)
+    updateUser(parseFloat(valueUSDUser.toString()), 
+      parseFloat(valueGBPUser.toString()), 
+      parseFloat(USDValue.toString()), 
+      parseFloat(GBPValue.toString()))
+  }
+
+  const handleClickSellGBPUSD = () => {
+    setValueUSDUser(parseFloat(valueUSDUser.toString()) + parseFloat(USDValue.toString()))
+    setValueGBPUser(valueGBPUser - GBPValue)
+    updateUser(parseFloat(valueUSDUser.toString()), 
+      parseFloat(valueGBPUser.toString()), 
+      parseFloat(USDValue.toString()), 
+      parseFloat(GBPValue.toString()))
+  }
+
+  const updateUser = (USDUser: number, GBPUser: number, USDValue: number, GBPValue: number) => {
+    api.patch(`/user/${id}`, {
+      valueUSD: USDUser,
+      ValueGBP: GBPUser,
+      pastTrades: [{
+        "FromTo": `${CONVERTFROM}/${CONVERTTO}`,
+        "valueUSD": USDValue,
+        "valueGBP":	GBPValue
+      }]
+    }).then((result) => {
+      console.log(result)
+    })
   }
 
   const handleUSD = (value: string) => {
@@ -67,19 +120,24 @@ export default function App() {
       setNameUser(result.data[0].name)
       setValueUSDUser(parseFloat(result.data[0].valueUSD))
       setValueGBPUser(parseFloat(result.data[0].ValueGBP))
+      if(result.data[0].pastTrades.length !== 0) {
+        pasTrades.push(result.data[0].pastTrades)
+      }
     })
-  }, [id, nameUser, valueUSDUser, valueGBPUser])
+  }, [id, nameUser, valueUSDUser, valueGBPUser, pasTrades])
 
   useEffect(() => {
-  
     api.get('/').then((result) => {
-      setValueGBPUSD(parseFloat(result.data.GBPUSD.firstValue))
-      setSecondValueGBPUSD(parseFloat(result.data.GBPUSD.secondValue))
-      setTimeGBPUSD(result.data.time)
-      setValueUSDGBP(parseFloat(result.data.USDGBP.firstValue))
-      setSecondValueUSDGBP(parseFloat(result.data.USDGBP.secondValue))
+      if(result.data.GBPUSD.firstValue !== '' && result.data.USDGBP.firstValue !== '') {
+        setValueGBPUSD(parseFloat(result.data.GBPUSD.firstValue))
+        setSecondValueGBPUSD(parseFloat(result.data.GBPUSD.secondValue))
+        setTimeGBPUSD(result.data.time)
+        setValueUSDGBP(parseFloat(result.data.USDGBP.firstValue))
+        setSecondValueUSDGBP(parseFloat(result.data.USDGBP.secondValue))                
+      }
     }) 
-  }, [secondValueGBPUSD, secondValueUSDGBP, timeGBPUSD, valueGBPUSD, valueUSDGBP])
+    .catch((err) => console.log(err))
+  })
 
   useEffect(() => {
     api.post('/', {
@@ -100,17 +158,21 @@ export default function App() {
       <Container>
         <UserCard nameUser={nameUser} valueGBPUser={valueGBPUser} valueUSDUser={valueUSDUser}/>
         <Box sx={{ my: 2 }}>
-          <InputsDash label={"USD"} adornment={'$'} Value={USDValue} handleUSD={async (value) => handleUSD(value)}/>
-          <InputsDash label={"GBP"} adornment={'£'} Value={GBPValue} handleUSD={async (value) => handleGBP(value)}/>   
+          <AccordionPastTrades rowsPast={pasTrades}/>
+          {/* <InputsDash label={"USD"} adornment={'$'} Value={USDValue} handleUSD={async (value) => handleUSD(value)}/> */}
+          {/* <InputsDash label={"GBP"} adornment={'£'} Value={GBPValue} handleUSD={async (value) => handleGBP(value)}/>    */}
         </Box>
         <Box sx={{ my: 2 }}>
+
+        <Stack direction="row" spacing={2}>
           <CardValues 
             title='USD/GBP' 
             value={valueGBPUSD} 
             label='GBP' 
             adornment={'£'} 
             handle={async (value) => handleGBP(value)}
-            handleClick={handleClick}
+            handleClickBuy={handleClickBuyUSDGBP}
+            handleClickSell={handleClickSellUSDGBP}
             valueChange={USDValue}
             adornmentSecond={'$'}
           />
@@ -120,10 +182,12 @@ export default function App() {
             label='USD' 
             adornment={'$'} 
             handle={async (value) => handleUSD(value)} 
-            handleClick={handleClick}
+            handleClickBuy={handleClickBuyGBPUSD}
+            handleClickSell={handleClickSellGBPUSD}
             valueChange={GBPValue}
             adornmentSecond={'£'}
           />
+          </Stack>
           {/* <ChartLine timeUSDGBP={arrTimeUSDGBP} valueUSDGBP={arrValueUSDGBP} valueGBPUSD={arrValueGBPUSD}/> */}
         </Box>
       </Container>  
