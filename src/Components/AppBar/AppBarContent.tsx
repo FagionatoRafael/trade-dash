@@ -8,7 +8,7 @@ interface AppBarProps {
     title: string
 }
 
-export const AppBarContent = (props: AppBarProps) => {
+const AppBarContent = (props: AppBarProps) => {
 
     return (
         <>
@@ -23,3 +23,5 @@ export const AppBarContent = (props: AppBarProps) => {
         </>
     )
 }
+
+export default AppBarContent;

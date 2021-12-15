@@ -21,19 +21,18 @@ const AccordionPastTrades: React.FC<TablePsatTradeProps> = (props) => {
   return (
   <>
     <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-            <Typography>Past Trades</Typography>
-            <AccordionDetails>
-                <Typography>
-                    <TablePastTrades rowsPast={props.rowsPast}/>
-                </Typography>
-            </AccordionDetails>
-            
-        </AccordionSummary>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+          <Typography>Past Trades</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>
+            <TablePastTrades rowsPast={props.rowsPast}/>
+        </Typography>
+      </AccordionDetails>   
     </Accordion>  
   </>
   );

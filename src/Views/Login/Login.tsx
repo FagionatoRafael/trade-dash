@@ -12,7 +12,6 @@ const Login = () => {
 
   const [nameLogin, setNamelogin] = useState('')
   const [passwordLogin, setPasswordLogin] = useState('')
-  const [idLogin, setIdLogin] = useState('')
 
   const history = useHistory()
 
@@ -25,16 +24,16 @@ const Login = () => {
   }
 
   const handleClickLogin = () => {
+    console.log(nameLogin)
     api.get('/user', {
       params: {
         name: nameLogin,
         password: passwordLogin
-      } 
-    })
+    }})
     .then((result) => {
-      console.log(result.data[0]._id)
       if(nameLogin !== '' && passwordLogin !== '') {
-        history.push(`/dash/${result.data[0]._id}`)
+        // console.log(result.data)
+        history.push(`/dash/${result.data._id}`)
       }
     })
     

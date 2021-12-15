@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import React from 'react';
 
 interface InputsProps {
-    Value: number
     label: string
     adornment: string
     handleUSD: (arg0: string) => {}
+    helper: string
 }
 
 export const InputsDash = (props: InputsProps) => {
@@ -16,10 +16,10 @@ export const InputsDash = (props: InputsProps) => {
         label={props.label}
         variant="outlined" 
         type='number' 
-        value={props.Value}
-        style={{padding: 10}}
+        style={{margin: 10}}
         onChange={(value) => props.handleUSD(value.target.value)}
         fullWidth
+        helperText={props.helper}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

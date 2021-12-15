@@ -17,14 +17,15 @@ interface TablePsatTradeProps {
 }
 
 const TablePastTrades = (prosp: TablePsatTradeProps) => {
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>From/To</TableCell>
-            <TableCell align="right">Value From</TableCell>
-            <TableCell align="right">value To</TableCell>
+            <TableCell>Trade</TableCell>
+            <TableCell align="right">Value DOLLAR</TableCell>
+            <TableCell align="right">value POUND</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

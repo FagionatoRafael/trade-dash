@@ -27,7 +27,8 @@ const Signin = () => {
         name: nameSignin,
         password: passwordSignin,
         valueUSD: 1000.00,
-        ValueGBP: 1000.00
+        ValueGBP: 1000.00,
+        pastTrades: []
       })
       .then((result) => {
         console.log(result.data.insertedId)
