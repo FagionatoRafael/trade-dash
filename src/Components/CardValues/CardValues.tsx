@@ -2,11 +2,9 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import { InputsDash } from '../inputsDash/InputsDash';
+import InputsDash from '../inputsDash/InputsDash';
 
 interface CardValuesProps {
   title: string

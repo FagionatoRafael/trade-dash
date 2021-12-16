@@ -9,7 +9,7 @@ interface InputsProps {
     helper: string
 }
 
-export const InputsDash = (props: InputsProps) => {
+const InputsDash = (props: InputsProps) => {
     return (
       <TextField 
         id="outlined-basic" 
@@ -30,3 +30,5 @@ export const InputsDash = (props: InputsProps) => {
       />
     )
 }
+
+export default InputsDash;

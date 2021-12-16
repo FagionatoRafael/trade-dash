@@ -12,9 +12,10 @@ describe('AccordingPastTrade component', () => {
     expect(renderComponent).toMatchSnapshot();
   })
 
-  test('Should have a array in rowsPast', () => {
-    const renderComponent = render(<AccordionPastTrades rowsPast={[]} />);
+  test('should render component TablePastTrades', () => {
+    const renderComponent = render(<TablePastTrades rowsPast={[]} />)
 
-    expect(renderComponent.getAllByDisplayValue).toBeTruthy()
+    expect(renderComponent).not.toBeUndefined()
   })
+  
 })

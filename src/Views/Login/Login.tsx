@@ -4,9 +4,10 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AppBarContent } from '../../Components/AppBar/AppBarContent';
+import AppBarContent from '../../Components/AppBar/AppBarContent';
 import { InputsLogin } from '../../Components/InputsLogin/InputsLogin';
 import { api } from '../../service/api';
+
 
 const Login = () => {
 
@@ -24,7 +25,6 @@ const Login = () => {
   }
 
   const handleClickLogin = () => {
-    console.log(nameLogin)
     api.get('/user', {
       params: {
         name: nameLogin,
@@ -32,7 +32,6 @@ const Login = () => {
     }})
     .then((result) => {
       if(nameLogin !== '' && passwordLogin !== '') {
-        // console.log(result.data)
         history.push(`/dash/${result.data._id}`)
       }
     })

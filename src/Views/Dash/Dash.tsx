@@ -7,13 +7,13 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import Stack from '@mui/material/Stack';
 import { useHistory } from 'react-router-dom';
 import { api } from '../../service/api';
-import { AppBarContent } from '../../Components/AppBar/AppBarContent';
+import AppBarContent from '../../Components/AppBar/AppBarContent';
 import { useParams } from 'react-router-dom';
 import UserCard from '../../Components/UserCard/UserCard';
 import CardValues from '../../Components/CardValues/CardValues';
 import AccordionPastTrades from '../../Components/AccordionPastTrades/AccordionPastTrades';
+import useWebSocket from 'react-use-websocket';
 
-Chart.register(...registerables, zoomPlugin);
 
 interface RouteParams {
   id: string
@@ -48,6 +48,18 @@ export default function App() {
 
   const [textHelper, setTextHelper] = useState('')
   const [isDisabled, setIsDisabled] = useState(false)
+
+  // const { lastJsonMessage, sendMessage } =  useWebSocket('ws://localhost:8080', {
+  //   onOpen: () => console.log(`Connected to App WS`),
+  //   onMessage: () => {
+  //     if (lastJsonMessage) {
+  //       console.log(lastJsonMessage)
+  //     }
+  //   },
+  //   onError: (event) => { console.error(event); },
+  //   shouldReconnect: (closeEvent) => true,
+  //   reconnectInterval: 3000
+  // });
 
   const handleClickBuyUSDGBP = () => {
     if((!(valueUSDUser < USDValue) || !(valueGBPUser < GBPValue)) && (USDValue !== 0 || GBPValue !== 0)) {
@@ -203,8 +215,6 @@ export default function App() {
             disabled={isDisabled}
           />
         </Stack>
-
-          {/* <ChartLine timeUSDGBP={arrTimeUSDGBP} valueUSDGBP={arrValueUSDGBP} valueGBPUSD={arrValueGBPUSD}/> */}
         </Box>
         <Box sx={{ my: 2 }}>
           <AccordionPastTrades rowsPast={pasTrades}/>

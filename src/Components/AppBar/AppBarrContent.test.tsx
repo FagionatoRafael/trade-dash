@@ -10,4 +10,5 @@ describe('AppBarContent component', () => {
 
     expect(renderComponente).toMatchSnapshot();
   })
+
 })

@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 
 interface pastTradesParams {
     FromTo: string
-      valueUSD: number,
+    valueUSD: number,
     valueGBP:	number
   }
 

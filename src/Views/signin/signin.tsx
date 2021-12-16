@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { AppBarContent } from '../../Components/AppBar/AppBarContent';
+import AppBarContent from '../../Components/AppBar/AppBarContent';
 import { InputsLogin } from '../../Components/InputsLogin/InputsLogin';
 import { api } from '../../service/api';
 
