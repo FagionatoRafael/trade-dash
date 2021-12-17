@@ -1,18 +1,13 @@
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import UserCard from './UserCard';
+import TablePastTrades from './tablePastTrades';
 
 afterEach(cleanup);
 
-describe('UserCard component', () => {
+describe('tablePastTrades component', () => {
   test('Should render component', () => {
     const renderComponente = render(
-    <UserCard 
-        nameUser={''} 
-        valueUSDUser={0} 
-        valueGBPUser={0} 
-        exit={() => {}}         
-    />);
+    <TablePastTrades rowsPast={[]} />);
 
     expect(renderComponente).toMatchSnapshot();
   })

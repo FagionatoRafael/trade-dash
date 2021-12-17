@@ -7,7 +7,7 @@ interface InputsProps {
     handle: (arg0: string) => {}
 }
 
-export const InputsLogin = (props: InputsProps) => {
+const InputsLogin = (props: InputsProps) => {
     return (
       <TextField 
         id="outlined-basic" 
@@ -20,3 +20,5 @@ export const InputsLogin = (props: InputsProps) => {
       />
     )
 }
+
+export default InputsLogin;
