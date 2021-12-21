@@ -4,18 +4,18 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## technologies used
 
-- Reactjs;
-    Library to create a user interface.
-- MaterialUi;
-    Library of foundational and advanced components, enabling you to build your own design system and develop React applications faster.
-- Typescript;
-    Is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.
-- Axios;
-    Is a promise-based HTTP Client for node.js and the browser.
-- WebSocket;
-    Is an advanced technology that makes it possible to open an interactive communication session between the user's browser and a server
-- Jest;
-    Is a powerful JavaScript Testing Framework with a focus on simplicity.
+- Reactjs:
+    Library to create a user interface. Used to create the trade application
+- MaterialUi:
+    Library of foundational and advanced components, enabling you to build your own design system and develop React applications faster. Used to design the application
+- Typescript:
+    Is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale. Used to create the API with typing that help us.
+- Axios:
+    Is a promise-based HTTP Client for node.js and the browser. Used to consume the trade API.
+- WebSocket:
+    Is an advanced technology that makes it possible to open an interactive communication session between the user's browser and a server. Used to consume in real time the websocket.
+- Jest:
+    Is a powerful JavaScript Testing Framework with a focus on simplicity. Used to test unit in the components.
 
 ## Available Scripts
 
