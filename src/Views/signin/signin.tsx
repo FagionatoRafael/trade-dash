@@ -2,11 +2,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppBarContent from '../../Components/AppBar/AppBarContent';
 import InputsLogin from '../../Components/InputsLogin/InputsLogin';
 import { api } from '../../service/api';
+import useWebSocket from 'react-use-websocket';
 
 const Signin = () => {
 
@@ -14,6 +15,20 @@ const Signin = () => {
   const [passwordSignin, setPasswordSignin] = useState('')
   
   const history = useHistory()
+
+  // const { lastJsonMessage, sendMessage } =  useWebSocket('wss://ws.bitstamp.net', {
+  //   onOpen: () => console.log(`Connected to App WS`),
+  //   onMessage: () => {
+  //     if (lastJsonMessage) {
+  //       console.log(lastJsonMessage)
+  //     }
+  //   },
+  //   onError: (event) => { console.error(event); },
+  //   shouldReconnect: (closeEvent) => true,
+  //   reconnectInterval: 3000
+  // });
+
+  
   
   const handleNameSignin = (value: string) => {
       setNameSignin(value)

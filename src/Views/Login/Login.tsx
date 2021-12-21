@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppBarContent from '../../Components/AppBar/AppBarContent';
 import InputsLogin from '../../Components/InputsLogin/InputsLogin';
@@ -14,7 +14,7 @@ const Login = () => {
   const [nameLogin, setNamelogin] = useState('')
   const [passwordLogin, setPasswordLogin] = useState('')
 
-  const history = useHistory()
+  const history = useHistory()  
 
   const handleNameLogin = (value: string) => {
     setNamelogin(value)

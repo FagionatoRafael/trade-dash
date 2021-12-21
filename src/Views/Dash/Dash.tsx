@@ -28,6 +28,8 @@ interface pastTradesParams {
 export default function App() {
 
   const {id} = useParams<RouteParams>();
+  const currencyPairgbpusd = 'gbpusd';
+  // const currencyPairusdgbp = 'usdgbp';
 
   const history = useHistory()
 
@@ -49,17 +51,34 @@ export default function App() {
   const [textHelper, setTextHelper] = useState('')
   const [isDisabled, setIsDisabled] = useState(false)
 
-  // const { lastJsonMessage, sendMessage } =  useWebSocket('ws://localhost:8080', {
-  //   onOpen: () => console.log(`Connected to App WS`),
-  //   onMessage: () => {
-  //     if (lastJsonMessage) {
-  //       console.log(lastJsonMessage)
-  //     }
-  //   },
-  //   onError: (event) => { console.error(event); },
-  //   shouldReconnect: (closeEvent) => true,
-  //   reconnectInterval: 3000
-  // });
+
+  useEffect(() => {
+    const subscribe = {
+      event: 'bts:subscribe',
+      data: {
+        channel: `order_book_${currencyPairgbpusd}`
+      }
+    };
+    const ws = new WebSocket('wss://ws.bitstamp.net');
+
+    ws.onopen = () => {
+      ws.send(JSON.stringify(subscribe));
+    };
+    ws.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      if(response.data.bids !== undefined) {
+        setValueGBPUSD(response.data.bids[0][0])
+      }
+    };
+    ws.onclose = () => {
+      ws.close();
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [currencyPairgbpusd]);
+
 
   const handleClickBuyUSDGBP = () => {
     if((!(valueUSDUser < USDValue) || !(valueGBPUser < GBPValue)) && (USDValue !== 0 || GBPValue !== 0)) {
@@ -163,7 +182,7 @@ export default function App() {
   useEffect(() => {
     api.get('/').then((result) => {
       if(result.data.GBPUSD.firstValue !== '' && result.data.USDGBP.firstValue !== '') {
-        setValueGBPUSD(parseFloat(result.data.GBPUSD.firstValue))
+        // setValueGBPUSD(parseFloat(result.data.GBPUSD.firstValue))
         setValueUSDGBP(parseFloat(result.data.USDGBP.firstValue))             
       }
     }) 
